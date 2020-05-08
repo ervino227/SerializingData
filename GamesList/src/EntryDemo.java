@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class EntryDemo {
@@ -13,23 +14,50 @@ public class EntryDemo {
 	
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
+		boolean valid = true;
 		Scanner q = new Scanner(System.in);
 		showMenu();
-		menuChoice = q.nextInt(); 
 		
-		if(menuChoice == 1) {
-			viewEntries();
+		try {
+			menuChoice = q.nextInt(); 
 		}
-		else if(menuChoice == 2) {
-			addEntry();
-			System.out.println("\nNew Entry has been added");
+		catch(InputMismatchException e) {
+			System.out.println("invalid input, closing program...\n");
 		}
-		else if(menuChoice == 3) {
-			deleteEntry();
+		
+		if (menuChoice < 1 || menuChoice > 4)
+			valid = false;
+		
+		while(!valid) {
+			showMenu();
+			menuChoice = q.nextInt();
+			
+			if(menuChoice > 0 && menuChoice < 5) {
+				valid = true;
+			}
 		}
-		else if(menuChoice == 4) {
-			System.out.println("Goodbye.");
-			System.exit(0);
+		
+		while(valid) {
+			if(menuChoice == 1) {
+				viewEntries();
+				showMenu();
+				menuChoice = q.nextInt(); 
+			}
+			else if(menuChoice == 2) {
+				addEntry();
+				System.out.println("\nNew Entry has been added");
+				showMenu();
+				menuChoice = q.nextInt(); 
+			}
+			else if(menuChoice == 3) {
+				deleteEntry();
+				showMenu();
+				menuChoice = q.nextInt(); 
+			}
+			else if(menuChoice == 4) {
+				System.out.println("Goodbye.");
+				System.exit(0);
+			}
 		}
 		
 	}
